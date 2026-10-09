@@ -235,3 +235,4 @@ function route(){if(!S.user)return loginView();if(UI.welcome)return welcomeView(
 function selfTest(){const a=[[1e4,1200],[2e4,2400],[3e4,3600],[4e4,4800],[5e4,6000],[6e4,7200]];const bad=a.filter(x=>profit(x[0])!==x[1]);console.log(bad.length?'TidPay tests FAIL':'TidPay tests OK');return !bad.length}
 load();selfTest();route();
 </script></body></html>
+
