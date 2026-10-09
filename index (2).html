@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><title>TidPay</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0a0b;--card:#1a181b;--card2:#232026;--red:#c8102e;--gold:#f2b81c;--tx:#fff;--mu:#9a959c;--ok:#2fbf71;--wa:#f08a24;--er:#e5484d;--ln:rgba(255,255,255,.09);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--tx);font:400 14px/1.5 Manrope,system-ui,sans-serif;overflow-x:hidden}
+h1,h2,h3,.dsp{font-family:Unbounded,Manrope,sans-serif;font-weight:700;margin:0}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+#bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:linear-gradient(#1b0d14,#4a1520 45%,#f2a33a 78%,#1a2a38)}
+#bg svg{position:absolute;bottom:0;left:-10%;width:120%;height:70%}
+.l1{animation:dr 60s ease-in-out infinite alternate}.l2{animation:dr 40s ease-in-out infinite alternate-reverse}.l3{animation:dr 28s ease-in-out infinite alternate}
+@keyframes dr{to{transform:translateX(-6%)}}
+#bg:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 70%,rgba(242,184,28,.25),transparent 50%),rgba(8,6,8,.55)}
+.glow{position:absolute;width:420px;height:420px;border-radius:50%;filter:blur(90px);background:var(--red);opacity:.35;top:-100px;left:-80px;animation:fl 14s ease-in-out infinite alternate;z-index:1}
+@keyframes fl{to{transform:translate(60vw,20vh)}}
+body.in #bg{opacity:.18;transition:opacity .8s}
+#app{position:relative;z-index:2;min-height:100%}
+.glass{background:rgba(26,24,27,.72);backdrop-filter:blur(18px);border:1px solid var(--ln);border-radius:20px}
+.center{min-height:100vh;display:grid;place-items:center;padding:20px}
+.box{width:min(420px,100%);padding:34px;animation:pop .6s cubic-bezier(.2,.9,.3,1)}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.97)}}
+.logo{display:flex;align-items:center;gap:10px}.logo b{font:700 20px Unbounded,sans-serif}
+label{display:block;color:var(--mu);font-size:12px;margin:14px 0 5px}
+.in{width:100%;background:#0f0d10;border:1px solid var(--ln);border-radius:12px;padding:11px 13px;transition:border-color .2s,box-shadow .2s}
+.in:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 3px rgba(242,184,28,.15)}
+.in.bad{border-color:var(--er)}.err{color:var(--er);font-size:12px;min-height:16px;margin-top:3px}
+.btn{padding:10px 18px;border-radius:12px;font-weight:700;background:var(--card2);transition:transform .15s,filter .2s}
+.btn:hover{filter:brightness(1.15)}.btn:active{transform:scale(.96)}
+.pri{background:linear-gradient(135deg,var(--red),#e0462f 60%,var(--gold));color:#fff}
+.gold{background:var(--gold);color:#1a1200}.dg{background:rgba(229,72,77,.15);color:var(--er)}
+.btn[disabled]{opacity:.5;pointer-events:none}.w{width:100%;margin-top:20px}
+.sp{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:rot .7s linear infinite;vertical-align:-3px;margin-right:6px}
+@keyframes rot{to{transform:rotate(360deg)}}
+.layout{display:flex;min-height:100vh}
+aside{width:236px;flex:none;background:rgba(14,12,14,.92);border-right:1px solid var(--ln);padding:20px 14px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;z-index:20;transition:transform .3s}
+aside nav{margin-top:28px;display:grid;gap:6px}
+.nv{display:flex;gap:10px;align-items:center;padding:11px 14px;border-radius:12px;background:none;color:var(--mu);text-align:left;font-weight:600;transition:.2s}
+.nv:hover{color:#fff;background:var(--card)}.nv.on{color:#fff;background:linear-gradient(90deg,rgba(200,16,46,.4),rgba(242,184,28,.14));box-shadow:inset 3px 0 var(--gold)}
+.me{margin-top:auto;padding:12px;background:var(--card);border-radius:14px;font-size:12px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--wa);margin-right:6px}.dot.g{background:var(--ok)}
+main{flex:1;min-width:0}
+.top{display:flex;align-items:center;gap:14px;justify-content:flex-end;padding:12px 24px;border-bottom:1px solid var(--ln);background:rgba(11,10,11,.8);backdrop-filter:blur(10px);position:sticky;top:0;z-index:10}
+.burger{display:none;margin-right:auto;background:var(--card);padding:8px 12px;border-radius:10px}
+.sw{width:42px;height:24px;border-radius:12px;background:#3a363c;position:relative;transition:.25s}
+.sw:after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.25s}
+.sw.on{background:var(--ok)}.sw.on:after{left:21px}
+.chip{background:var(--card);border:1px solid var(--ln);padding:6px 12px;border-radius:10px;font-weight:700}
+.av{width:34px;height:34px;border-radius:50%;background:conic-gradient(var(--red),var(--gold),var(--red))}
+#view{padding:24px;max-width:1300px;animation:pop .45s}
+h1{font-size:24px;margin-bottom:18px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));margin-top:14px}
+.c{background:var(--card);border:1px solid var(--ln);border-radius:18px;padding:18px}
+.c small,.mu{color:var(--mu)}.c .v{font:700 21px Unbounded,sans-serif;margin-top:6px;word-break:break-word}
+.c.hl{border-color:rgba(242,184,28,.4);background:linear-gradient(135deg,rgba(200,16,46,.22),var(--card))}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0}
+.tab{padding:7px 14px;border-radius:10px;background:var(--card);border:1px solid var(--ln);color:var(--mu);font-weight:600;transition:.2s}
+.tab.on{background:var(--gold);color:#1a1200;border-color:var(--gold)}
+.tw{overflow-x:auto;border-radius:16px;border:1px solid var(--ln);background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:860px}th,td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--ln);white-space:nowrap}
+th{color:var(--mu);font-weight:600;font-size:12px}tr:last-child td{border:0}
+.st{padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700}
+.s-new{background:rgba(242,184,28,.15);color:var(--gold)}.s-work{background:rgba(240,138,36,.15);color:var(--wa)}.s-check{background:rgba(120,160,255,.15);color:#8fb0ff}.s-ok{background:rgba(47,191,113,.15);color:var(--ok)}.s-rej{background:rgba(229,72,77,.15);color:var(--er)}
+.demo{font-size:10px;background:var(--card2);padding:2px 6px;border-radius:6px;color:var(--gold);margin-left:6px}
+.em{text-align:center;padding:40px;color:var(--mu)}
+.ch svg{width:100%;height:150px;display:block}.bar{transform-box:fill-box;transform-origin:bottom;animation:gr .7s ease-out}
+@keyframes gr{from{transform:scaleY(0)}}
+#modal{position:fixed;inset:0;z-index:50;display:none;place-items:center;padding:16px;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);opacity:0;transition:opacity .25s}
+#modal.show{display:grid}#modal.vis{opacity:1}
+.md{width:min(520px,100%);max-height:92vh;overflow:auto;padding:26px;border-top:2px solid var(--gold);transform:translateY(20px) scale(.97);transition:transform .3s cubic-bezier(.2,.9,.3,1)}
+#modal.vis .md{transform:none}
+.md h2{font-size:18px;margin-bottom:6px}.x{float:right;background:none;font-size:22px;color:var(--mu)}
+.addr{display:flex;gap:8px;background:#0f0d10;border:1px dashed var(--gold);border-radius:12px;padding:10px;align-items:center;word-break:break-all;font-family:monospace}
+.warn{background:rgba(240,138,36,.12);border:1px solid rgba(240,138,36,.4);color:#ffc98a;padding:10px 12px;border-radius:12px;margin:12px 0;font-size:13px}
+.ring{width:96px;height:96px;margin:14px auto;display:block}.bartrack{height:8px;background:#0f0d10;border-radius:6px;overflow:hidden}.bartrack i{display:block;height:100%;background:linear-gradient(90deg,var(--red),var(--gold));width:0;transition:width 1s linear}
+#toasts{position:fixed;right:16px;bottom:16px;z-index:60;display:grid;gap:8px}
+.t{background:var(--card2);border-left:4px solid var(--gold);padding:11px 16px;border-radius:12px;animation:pop .35s;max-width:320px}.t.ok{border-color:var(--ok)}.t.er{border-color:var(--er)}
+@media(max-width:800px){aside{position:fixed;transform:translateX(-100%)}aside.open{transform:none}.burger{display:block}#view{padding:16px}.top{padding:10px 14px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style></head><body>
+<div id="bg"><div class="glow"></div>
+<svg viewBox="0 0 1200 500" preserveAspectRatio="none"><g class="l1"><path d="M0 300 L150 170 L260 250 L420 110 L560 240 L700 150 L860 260 L1000 140 L1200 280 V500 H0Z" fill="#5b2a3a" opacity=".7"/></g><g class="l2"><path d="M0 380 L120 280 L240 350 L400 240 L540 340 L720 230 L880 350 L1040 260 L1200 360 V500 H0Z" fill="#2b1a26" opacity=".85"/></g><g class="l3"><path d="M0 450 Q200 400 400 440 T800 430 T1200 450 V500 H0Z" fill="#0f2431"/><path d="M0 470 Q300 450 600 470 T1200 465 V500 H0Z" fill="#0b0a0b"/></g></svg></div>
+<div id="app"></div><div id="modal"></div><div id="toasts"></div>
+<script>
+const $=(s,e=document)=>e.querySelector(s),$$=(s,e=document)=>[...e.querySelectorAll(s)];
+const ADDR='TRthELbEHSsoQt589qWfC8bdFppsDmqcV4',RATE=12,AMOUNTS=[1e4,2e4,3e4,4e4,5e4,6e4];
+const BANKS={'Кыргызстан':['Оптима Банк','МБанк','Бакай Банк','Demir Bank','KICB','РСК Банк','Айыл Банк','Компаньон Банк','Дос-Кредобанк','Керемет Банк'],'Таджикистан':['Амонатбанк','Ориёнбанк','Эсхата','Спитамен Банк','Алиф Банк','Тавхидбанк','Душанбе Сити Банк','Международный банк Таджикистана']};
+const ST={new:'Новая',work:'В работе',check:'Ожидает проверки',ok:'Успешная',rej:'Отклонённая'};
+const bankCountry=b=>Object.keys(BANKS).find(c=>BANKS[c].includes(b))||'';
+let S={user:null,reqs:[],deals:[],accepting:false,ins:0,work:0,next:0,seq:0},UI={page:'dash',per:'7',from:'',to:'',rtab:'act',rq:'',rb:'',rsort:'desc',df:'all',welcome:false};
+const load=()=>{try{const x=JSON.parse(localStorage.getItem('tidpay'));if(x)S={...S,...x}}catch(e){}};
+const save=()=>{try{localStorage.setItem('tidpay',JSON.stringify(S))}catch(e){}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num=n=>new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2}).format(n);
+const rub=n=>num(n)+' ₽';
+const profit=a=>Math.round(a*RATE)/100;
+const mask=n=>'•••• •••• •••• '+n.slice(-4);
+const dkey=t=>{const d=new Date(t);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const sod=t=>{const d=new Date(t);d.setHours(0,0,0,0);return d.getTime()};
+const logo=(s=34)=>`<svg width="${s}" height="${s}" viewBox="0 0 40 40"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c8102e"/><stop offset="1" stop-color="#f2b81c"/></linearGradient></defs><rect width="40" height="40" rx="11" fill="url(#lg)"/><path d="M9 12h22v5H23v14h-6V17H9z" fill="#fff"/><path d="M22 24l8-8v6l-8 8z" fill="#1a1200" opacity=".55"/></svg>`;
+function toast(m,t=''){const e=document.createElement('div');e.className='t '+t;e.textContent=m;$('#toasts').append(e);setTimeout(()=>{e.style.transition='.3s';e.style.opacity=0;setTimeout(()=>e.remove(),300)},3200)}
+let onClose=null;
+function modal(html,mount){const m=$('#modal');m.innerHTML=`<div class="md glass" role="dialog" aria-modal="true">${html}</div>`;m.classList.add('show');requestAnimationFrame(()=>m.classList.add('vis'));$$('[data-x]',m).forEach(b=>b.onclick=closeM);mount&&mount(m)}
+function closeM(){const m=$('#modal');m.classList.remove('vis');if(onClose){onClose();onClose=null}setTimeout(()=>{if(!m.classList.contains('vis'))m.classList.remove('show')},250)}
+$('#modal').addEventListener('mousedown',e=>{if(e.target.id==='modal'&&!onClose)closeM()});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#modal').classList.contains('show')&&!onClose)closeM()});
+
+/* ---------- auth (DEMO) ---------- */
+function loginView(){document.body.classList.remove('in');$('#app').innerHTML=`<div class="center"><form class="box glass" id="lf" novalidate><div class="logo">${logo(44)}<b>TidPay</b></div><p class="mu">Платёжная панель для трафика Кыргызстана и Таджикистана</p>
+<label for="lgn">Логин</label><input class="in" id="lgn" autocomplete="username"><label for="pw">Пароль</label><div style="position:relative"><input class="in" id="pw" type="password" autocomplete="current-password"><button type="button" id="eye" class="x" style="position:absolute;right:10px;top:6px;font-size:13px">Показать</button></div>
+<div class="err" id="le"></div><button class="btn pri w" id="lb">Войти</button><p class="mu" style="font-size:11px;margin:14px 0 0">Подойдёт любой логин от 3 символов и пароль от 6 символов.</p></form></div>`;
+$('#eye').onclick=()=>{const p=$('#pw'),h=p.type==='password';p.type=h?'text':'password';$('#eye').textContent=h?'Скрыть':'Показать'};
+$('#lf').onsubmit=e=>{e.preventDefault();const l=$('#lgn').value.trim(),p=$('#pw').value;
+if(l.length<3||p.length<6){$('#le').textContent='Введите логин (от 3 символов) и пароль (от 6 символов)';$('#lf').animate([{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'none'}],{duration:250});return}
+const b=$('#lb');b.disabled=true;b.innerHTML='<span class="sp"></span>Проверяем…';
+setTimeout(()=>{S={user:l,reqs:[],deals:[],accepting:false,ins:0,work:0,next:0,seq:0};UI.page='dash';UI.df='all';UI.rtab='act';UI.rq='';UI.rb='';save();toast('Вход выполнен','ok');UI.welcome=true;route()},900)}}
+function welcomeView(){$('#app').innerHTML=`<div class="center"><div class="box glass" style="text-align:center;width:min(520px,100%)"><div style="display:grid;place-items:center">${logo(60)}</div><h1 style="margin:18px 0 8px">Добро пожаловать в TidPay</h1><p class="mu">Ведите реквизиты, обрабатывайте сделки и следите за оборотом и прибылью в одном месте. Сейчас панель работает в DEMO-режиме.</p><button class="btn pri w" id="go">Перейти в рабочую панель</button></div></div>`;$('#go').onclick=()=>{UI.welcome=false;route()}}
+
+/* ---------- calc ---------- */
+function range(){const now=Date.now(),t=sod(now);let f=0,e=now;
+if(UI.per==='1')f=t;else if(UI.per==='7')f=t-6*864e5;else if(UI.per==='30')f=t-29*864e5;
+else if(UI.per==='c'){f=UI.from?new Date(UI.from+'T00:00').getTime():0;e=UI.to?new Date(UI.to+'T23:59:59').getTime():now}return[f,e]}
+function stats(f,e){const d=S.deals.filter(x=>x.ts>=f&&x.ts<=e),ok=d.filter(x=>x.status==='ok'),turn=ok.reduce((a,x)=>a+x.amount,0);
+return{d,ok,turn,prof:profit(turn),cnt:s=>d.filter(x=>x.status===s).length,avg:ok.length?turn/ok.length:0,share:d.length?ok.length/d.length*100:0}}
+function days(f,e){let s=f||(S.deals.length?Math.min(...S.deals.map(x=>x.ts)):Date.now());s=Math.max(sod(s),sod(e)-30*864e5);const o=[];for(let t=s;t<=e;t+=864e5)o.push(dkey(t));return o}
+function series(f,e,fn){const ds=days(f,e),m={};ds.forEach(k=>m[k]=0);S.deals.filter(x=>x.ts>=f&&x.ts<=e).forEach(x=>{const k=dkey(x.ts);if(k in m)m[k]+=fn(x)});return{ds,v:ds.map(k=>m[k])}}
+function bars(v,ds,col){const mx=Math.max(...v,1),n=v.length,w=400/n;return `<svg viewBox="0 0 400 150" preserveAspectRatio="none">${v.map((x,i)=>{const h=x/mx*120;return `<rect class="bar" x="${i*w+w*.15}" y="${135-h}" width="${w*.7}" height="${Math.max(h,x?2:0)}" rx="3" fill="${col}"><title>${ds[i]}: ${num(x)}</title></rect>`}).join('')}<text x="0" y="148" fill="#9a959c" font-size="9">${ds[0]||''}</text><text x="400" y="148" fill="#9a959c" font-size="9" text-anchor="end">${ds[n-1]||''}</text></svg>`}
+function donut(st){const cols={new:'#f2b81c',work:'#f08a24',check:'#8fb0ff',ok:'#2fbf71',rej:'#e5484d'},tot=Object.keys(ST).reduce((a,k)=>a+st.cnt(k),0);let off=0;
+const r=48,C=2*Math.PI*r,seg=Object.keys(ST).map(k=>{const l=tot?st.cnt(k)/tot*C:0,s=`<circle r="${r}" cx="70" cy="70" fill="none" stroke="${cols[k]}" stroke-width="18" stroke-dasharray="${l} ${C-l}" stroke-dashoffset="${-off}" transform="rotate(-90 70 70)"/>`;off+=l;return s}).join('');
+return `<div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap"><svg width="140" height="140" viewBox="0 0 140 140"><circle r="${r}" cx="70" cy="70" fill="none" stroke="#2a262c" stroke-width="18"/>${seg}<text x="70" y="75" text-anchor="middle" fill="#fff" font-size="20" font-weight="700">${tot}</text></svg><div>${Object.keys(ST).map(k=>`<div><span class="dot" style="background:${cols[k]}"></span>${ST[k]}: <b>${st.cnt(k)}</b></div>`).join('')}</div></div>`}
+
+/* ---------- shell ---------- */
+const NAV=[['dash','Дашборд'],['req','Реквизиты'],['deals','Сделки'],['fin','Финансы']];
+function shell(){document.body.classList.add('in');$('#app').innerHTML=`<div class="layout"><aside id="sb"><div class="logo">${logo()}<b>TidPay</b></div><nav>${NAV.map(n=>`<button class="nv" data-p="${n[0]}">${n[1]}</button>`).join('')}</nav>
+<div class="me"><div><b>${esc(S.user)}</b></div><div class="mu"><span class="dot g"></span>Оператор</div><button class="btn dg w" id="out" style="margin-top:10px;padding:8px">Выйти</button></div></aside>
+<main><div class="top"><button class="burger" id="bg2" aria-label="Меню">☰</button><span class="mu">Приём платежей</span><button class="sw" id="acc" aria-label="Приём платежей"></button><span class="chip" id="dep"></span><div class="av"></div></div><div id="view"></div></main></div>`;
+$$('.nv').forEach(b=>b.onclick=()=>{UI.page=b.dataset.p;$('#sb').classList.remove('open');render(true)});
+$('#bg2').onclick=()=>$('#sb').classList.toggle('open');
+$('#out').onclick=()=>{S.user=null;save();route()};
+$('#acc').onclick=()=>{S.accepting=!S.accepting;save();topbar();toast(S.accepting?'Приём платежей включён':'Приём платежей выключен')}}
+function topbar(){const a=$('#acc');if(!a)return;a.className='sw'+(S.accepting?' on':'');$('#dep').textContent='$'+num(S.work+S.ins);$$('.nv').forEach(b=>b.classList.toggle('on',b.dataset.p===UI.page))}
+function render(anim){const v=$('#view');if(!v)return;if(!anim&&v.contains(document.activeElement)&&/INPUT|SELECT/.test(document.activeElement.tagName))return;
+const y=scrollY;v.style.animation=anim?'':'none';v.innerHTML=({dash,req,deals,fin})[UI.page]();bind();topbar();scrollTo(0,anim?0:y)}
+function periodBar(){return `<div class="row">${[['1','Сегодня'],['7','7 дней'],['30','30 дней'],['all','Всё время'],['c','Диапазон']].map(p=>`<button class="tab ${UI.per===p[0]?'on':''}" data-per="${p[0]}">${p[1]}</button>`).join('')}${UI.per==='c'?`<input class="in" type="date" id="pf" value="${UI.from}" style="width:auto"><input class="in" type="date" id="pt" value="${UI.to}" style="width:auto">`:''}</div>`}
+function card(t,v,x='',cl=''){return `<div class="c ${cl}"><small>${t}</small><div class="v">${v}</div>${x?`<small>${x}</small>`:''}</div>`}
+
+/* ---------- views ---------- */
+function dash(){const[f,e]=range(),st=stats(f,e),act=S.reqs.filter(r=>r.on).length;
+const t=series(f,e,x=>x.status==='ok'?x.amount:0),p=series(f,e,x=>x.status==='ok'?profit(x.amount):0),c=series(f,e,()=>1);
+return `<h1>Дашборд</h1>${periodBar()}<div class="grid">${card('Оборот',rub(st.turn),'только успешные сделки','hl')}${card('Чистая прибыль',rub(st.prof),'12% от успешных сделок')}${card('Успешные сделки',st.ok.length)}${card('Новые сделки',st.cnt('new'))}${card('В обработке',st.cnt('work')+st.cnt('check'))}${card('Активные реквизиты',act)}${card('Рабочий депозит',num(S.work)+' USDT','нет подтверждённых пополнений')}${card('Страховой депозит',num(S.ins)+' USDT')}</div>
+<div class="row" style="margin-top:18px"><button class="btn pri" data-go="addreq">Добавить реквизит</button><button class="btn" data-go="deals">Открыть сделки</button><button class="btn" data-go="fin">Финансы</button><button class="btn gold" data-go="dep">Пополнить депозит</button></div>
+<div class="grid g2"><div class="c ch"><b>Оборот по дням, ₽</b>${bars(t.v,t.ds,'#f2b81c')}</div><div class="c ch"><b>Прибыль по дням, ₽</b>${bars(p.v,p.ds,'#c8102e')}</div><div class="c ch"><b>Операции по дням</b>${bars(c.v,c.ds,'#2fbf71')}</div><div class="c"><b>Статусы сделок</b><div style="margin-top:10px">${donut(st)}</div></div></div>`}
+
+function req(){let l=S.reqs.filter(r=>UI.rtab==='all'||(UI.rtab==='act'?r.on:!r.on));const q=UI.rq.toLowerCase();
+if(q)l=l.filter(r=>(r.name+r.bank+r.card.slice(-4)).toLowerCase().includes(q));if(UI.rb)l=l.filter(r=>r.bank===UI.rb);
+l.sort((a,b)=>UI.rsort==='desc'?b.ts-a.ts:a.ts-b.ts);
+return `<h1>Реквизиты <small class="mu" style="font-size:13px">всего: ${S.reqs.length}</small></h1><div class="row">${[['act','Активные'],['all','Все'],['off','Отключённые']].map(t=>`<button class="tab ${UI.rtab===t[0]?'on':''}" data-rt="${t[0]}">${t[1]}</button>`).join('')}<button class="btn pri" data-go="addreq" style="margin-left:auto">Добавить реквизит</button></div>
+<div class="row"><input class="in" id="rq" placeholder="Поиск: ФИО, банк, последние цифры" value="${esc(UI.rq)}" style="flex:1;min-width:200px"><select class="in" id="rb" style="width:auto"><option value="">Все банки</option>${Object.keys(BANKS).map(c=>`<optgroup label="${c}">${BANKS[c].map(b=>`<option ${UI.rb===b?'selected':''}>${b}</option>`).join('')}</optgroup>`).join('')}</select><select class="in" id="rs" style="width:auto"><option value="desc">Сначала новые</option><option value="asc" ${UI.rsort==='asc'?'selected':''}>Сначала старые</option></select></div>
+${l.length?`<div class="tw"><table><tr><th>ФИО</th><th>Банк</th><th>Карта</th><th>Статус</th><th>Добавлен</th><th></th></tr>${l.map(r=>`<tr><td>${esc(r.name)}</td><td>${esc(r.bank)} <small class="mu">${bankCountry(r.bank)}</small></td><td>${mask(r.card)}</td><td><span class="st ${r.on?'s-ok':'s-rej'}">${r.on?'Активен':'Отключён'}</span></td><td>${new Date(r.ts).toLocaleDateString('ru-RU')}</td><td><button class="btn" data-rv="${r.id}">Просмотр</button> <button class="btn" data-re="${r.id}">Изменить</button> <button class="btn" data-rtg="${r.id}">${r.on?'Отключить':'Включить'}</button> <button class="btn dg" data-rd="${r.id}">Удалить</button></td></tr>`).join('')}</table></div>`:`<div class="c em">Реквизитов нет. Добавьте первый, чтобы получать сделки.</div>`}`}
+
+function deals(){const cnt=s=>S.deals.filter(x=>x.status===s).length,ok=S.deals.filter(x=>x.status==='ok'),tu=ok.reduce((a,x)=>a+x.amount,0);
+const l=S.deals.filter(x=>UI.df==='all'||x.status===UI.df).sort((a,b)=>b.ts-a.ts);
+return `<h1>Сделки</h1><div class="grid">${card('Новые',cnt('new'))}${card('В работе',cnt('work'))}${card('Успешные',cnt('ok'))}${card('Отклонённые',cnt('rej'))}${card('Общий оборот',rub(tu),'','hl')}${card('Чистая прибыль',rub(profit(tu)))}</div>
+<div class="row" style="margin-top:16px">${[['all','Все'],...Object.entries(ST)].map(t=>`<button class="tab ${UI.df===t[0]?'on':''}" data-df="${t[0]}">${t[1]}</button>`).join('')}<button class="btn pri" id="trf" style="margin-left:auto">Запустить трафик</button></div>
+
+${l.length?`<div class="tw"><table><tr><th>ID</th><th>Дата</th><th>Операция</th><th>Банк</th><th>Реквизит</th><th>Сумма</th><th>Комиссия</th><th>Прибыль</th><th>Статус</th><th>Действия</th></tr>${l.map(d=>{const r=S.reqs.find(x=>x.id===d.rid);return `<tr><td>${d.id}</td><td>${new Date(d.ts).toLocaleString('ru-RU')}</td><td>${d.op}</td><td>${esc(d.bank)}</td><td>${r?esc(r.name)+' '+mask(r.card).slice(-9):esc(d.rl)}</td><td>${rub(d.amount)}</td><td>${RATE}%</td><td>${d.status==='ok'?rub(profit(d.amount)):'—'}</td><td><span class="st s-${d.status}">${ST[d.status]}</span></td><td>${d.status==='new'?`<button class="btn pri" data-tk="${d.id}">Взять в работу</button> `:''}${d.status==='work'?`<button class="btn gold" data-cf="${d.id}">Подтвердить пополнение</button> `:''}${['new','work'].includes(d.status)?`<button class="btn dg" data-rj="${d.id}">Отклонить</button>`:''}</td></tr>`}).join('')}</table></div>`:`<div class="c em">Сделок пока нет. Привяжите реквизиты и запустите трафик.</div>`}`}
+
+function fin(){const n=Date.now(),t=sod(n),P=[['Сегодня',t],['7 дней',t-6*864e5],['30 дней',t-29*864e5]],all=stats(0,n),blk=S.deals.filter(x=>x.status==='work').reduce((a,x)=>a+x.amount,0);
+const[f,e]=range(),cs=stats(f,e),inf=series(f,e,x=>x.amount),has=S.deals.length>0;
+return `<h1>Финансы</h1><div class="grid"><div class="c hl"><small>Страховой депозит USDT (TRC-20)</small><div class="v">${num(S.ins)} USDT</div><button class="btn gold" data-go="dep" style="margin-top:12px">Пополнить депозит</button></div>${card('Рабочий депозит',num(S.work)+' USDT')}${card('Доступный баланс',num(S.work)+' USDT')}${card('Заблокированные средства',rub(blk),'сделки в работе')}${card('Общий оборот',rub(all.turn))}${card('Чистая прибыль',rub(all.prof),'расчётная, 12%')}</div>
+<div class="grid g2">${P.map(p=>{const s=stats(p[1],n);return card('Оборот · '+p[0],rub(s.turn),'Прибыль: '+rub(s.prof))}).join('')}</div>
+<h3 style="margin:22px 0 4px;font-size:16px">Аналитика за период</h3>${periodBar()}<div class="grid">${card('Оборот',rub(cs.turn))}${card('Прибыль',rub(cs.prof))}${card('Успешные операции',cs.ok.length)}${card('Средний размер сделки',has&&cs.ok.length?rub(cs.avg):'Нет данных')}${card('Доля успешных',has&&cs.d.length?num(cs.share)+'%':'Нет данных')}</div>
+<div class="c ch" style="margin-top:14px"><b>Динамика входящего потока, ₽</b>${bars(inf.v,inf.ds,'#f2b81c')}</div>`}
+
+/* ---------- actions ---------- */
+function bind(){const v=$('#view');
+$$('[data-per]',v).forEach(b=>b.onclick=()=>{UI.per=b.dataset.per;render()});
+if($('#pf'))$('#pf').onchange=e=>{UI.from=e.target.value;render()};if($('#pt'))$('#pt').onchange=e=>{UI.to=e.target.value;render()};
+$$('[data-go]',v).forEach(b=>b.onclick=()=>{const g=b.dataset.go;if(g==='addreq')reqForm();else if(g==='dep')depStart();else{UI.page=g;render(true)}});
+$$('[data-rt]',v).forEach(b=>b.onclick=()=>{UI.rtab=b.dataset.rt;render()});
+if($('#rq'))$('#rq').oninput=e=>{UI.rq=e.target.value;const p=e.target.selectionStart;render(true);const i=$('#rq');i.focus();i.setSelectionRange(p,p)};
+if($('#rb'))$('#rb').onchange=e=>{UI.rb=e.target.value;render()};if($('#rs'))$('#rs').onchange=e=>{UI.rsort=e.target.value;render()};
+$$('[data-rv]',v).forEach(b=>b.onclick=()=>{const r=S.reqs.find(x=>x.id==b.dataset.rv);modal(`<button class="x" data-x>×</button><h2>Реквизит</h2><p>ФИО: <b>${esc(r.name)}</b><br>Банк: <b>${esc(r.bank)}</b> (${bankCountry(r.bank)})<br>Карта: <b>${mask(r.card)}</b><br>Статус: ${r.on?'активен':'отключён'}</p><button class="btn w" data-x>Закрыть</button>`)});
+$$('[data-re]',v).forEach(b=>b.onclick=()=>reqForm(S.reqs.find(x=>x.id==b.dataset.re)));
+$$('[data-rtg]',v).forEach(b=>b.onclick=()=>{const r=S.reqs.find(x=>x.id==b.dataset.rtg);r.on=!r.on;save();render();toast(r.on?'Реквизит включён':'Реквизит отключён')});
+$$('[data-rd]',v).forEach(b=>b.onclick=()=>modal(`<button class="x" data-x>×</button><h2>Удалить реквизит?</h2><p class="mu">Действие нельзя отменить. Старые сделки сохранят данные банка.</p><div class="row"><button class="btn dg" id="yd">Удалить</button><button class="btn" data-x>Отмена</button></div>`,()=>$('#yd').onclick=()=>{S.reqs=S.reqs.filter(x=>x.id!=b.dataset.rd);save();closeM();render();toast('Реквизит удалён')}));
+$$('[data-df]',v).forEach(b=>b.onclick=()=>{UI.df=b.dataset.df;render()});
+if($('#trf'))$('#trf').onclick=()=>{if(!S.reqs.some(r=>r.on)){modal(`<button class="x" data-x>×</button><h2>Привяжите реквизиты</h2><p class="mu">Чтобы запустить трафик, добавьте хотя бы один активный реквизит.</p><div class="row"><button class="btn pri" id="ar">Добавить реквизит</button><button class="btn" data-x>Отмена</button></div>`,()=>$('#ar').onclick=()=>{closeM();setTimeout(()=>reqForm(),300)});return}UI.page='fin';render(true);depStart()};
+$$('[data-tk]',v).forEach(b=>b.onclick=()=>{const d=S.deals.find(x=>x.id===b.dataset.tk);if(!d||d.status!=='new'){toast('Сделка уже недоступна','er');render();return}d.status='work';d.takenAt=Date.now();d.by=S.user;save();render();toast('Сделка '+d.id+' взята в работу','ok')});
+$$('[data-rj]',v).forEach(b=>b.onclick=()=>{const d=S.deals.find(x=>x.id===b.dataset.rj);if(!['new','work'].includes(d.status))return;d.status='rej';save();render();toast('Сделка отклонена')});
+$$('[data-cf]',v).forEach(b=>b.onclick=()=>{const d=S.deals.find(x=>x.id===b.dataset.cf);modal(`<button class="x" data-x>×</button><h2>Подтвердить сделку</h2><p>Сделка <b>${d.id}</b> на <b>${rub(d.amount)}</b>. Прибыль: <b>${rub(profit(d.amount))}</b>.</p><div class="warn">Это тестовая операция. Реальное подтверждение возможно только по статусу от банка или платёжного провайдера.</div><div class="row"><button class="btn pri" id="yc">Подтвердить</button><button class="btn" data-x>Отмена</button></div>`,()=>$('#yc').onclick=()=>{if(d.status!=='work'){closeM();return}d.status='ok';d.confirmedAt=Date.now();save();closeM();render();toast('Сделка подтверждена, прибыль '+rub(profit(d.amount)),'ok')})})}
+
+function reqForm(r){let c=r?bankCountry(r.bank):'Кыргызстан';
+const opts=()=>BANKS[c].filter(b=>b.toLowerCase().includes(($('#bs')?.value||'').toLowerCase())).map(b=>`<option ${r&&r.bank===b?'selected':''}>${b}</option>`).join('');
+modal(`<button class="x" data-x>×</button><h2>${r?'Изменить':'Добавить'} реквизит</h2><div class="row" style="margin:10px 0 0">${Object.keys(BANKS).map(k=>`<button type="button" class="tab ${k===c?'on':''}" data-c="${k}">${k}</button>`).join('')}</div>
+<label>ФИО держателя</label><input class="in" id="fn" value="${r?esc(r.name):''}"><div class="err" id="e1"></div><label>Банк</label><input class="in" id="bs" placeholder="Поиск банка" style="margin-bottom:6px"><select class="in" id="bk" size="4">${opts()}</select><div class="err" id="e2"></div>
+<label>Номер карты (16 цифр)</label><input class="in" id="cn" inputmode="numeric" maxlength="19" value="${r?r.card.replace(/(.{4})/g,'$1 ').trim():''}"><div class="err" id="e3"></div><p class="mu" style="font-size:12px">CVV, PIN и коды подтверждения не запрашиваются.</p><button class="btn pri w" id="sv">Сохранить</button>`,()=>{
+const re=()=>$('#bk').innerHTML=opts();$('#bs').oninput=re;
+$$('[data-c]').forEach(b=>b.onclick=()=>{c=b.dataset.c;$$('[data-c]').forEach(x=>x.classList.toggle('on',x===b));re()});
+$('#cn').oninput=e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,16).replace(/(.{4})/g,'$1 ').trim()};
+$('#sv').onclick=()=>{const n=$('#fn').value.trim().replace(/\s+/g,' '),b=$('#bk').value,cd=$('#cn').value.replace(/\s/g,'');let ok=1;
+const set=(i,m,k)=>{$('#'+i).textContent=m;if(m)ok=0};
+set('e1',/^[A-Za-zА-Яа-яЁёӢӣҒғҚқҲҳҶҷӮӯ.\-' ]{5,}$/.test(n)&&n.includes(' ')?'':'Введите ФИО полностью (минимум имя и фамилия)');
+set('e2',b?'':'Выберите банк из списка');set('e3',/^\d{16}$/.test(cd)?'':'Номер карты должен содержать 16 цифр');
+if(!ok)return;if(r){r.name=n;r.bank=b;r.card=cd}else S.reqs.push({id:Date.now(),name:n,bank:b,card:cd,on:true,ts:Date.now()});
+save();closeM();render();toast('Реквизит сохранён','ok')}})}
+
+function newDeal(){const a=S.reqs.filter(r=>r.on);if(!a.length)return false;const r=a[Math.floor(Math.random()*a.length)];
+S.seq++;S.deals.push({id:'TP-'+String(S.seq).padStart(5,'0'),ts:Date.now(),amount:AMOUNTS[Math.floor(Math.random()*6)],bank:r.bank,rid:r.id,rl:r.name,op:'OP-'+Math.random().toString(36).slice(2,8).toUpperCase(),status:'new',mode:'DEMO'});
+save();schedule();if(UI.page==='deals'||UI.page==='dash'||UI.page==='fin')render();toast('Новая сделка','');return true}
+function schedule(){S.next=Date.now()+(60+Math.floor(Math.random()*361))*1000;save()}
+setInterval(()=>{if(!S.user||UI.welcome)return;if(!S.next)schedule();const n=$('#nx');if(n)n.textContent=Math.max(0,Math.ceil((S.next-Date.now())/1000))+' с';if(Date.now()>=S.next){if(!newDeal())schedule()}},1000);
+
+/* ---------- deposit ---------- */
+function depStart(){if(!S.accepting){modal(`<button class="x" data-x>×</button><h2>Приём платежей выключен</h2><p class="mu">Включите приём, чтобы пополнить депозит.</p><div class="row"><button class="btn pri" id="en">Включить</button><button class="btn" data-x>Отмена</button></div>`,()=>$('#en').onclick=()=>{S.accepting=true;save();topbar();closeM();setTimeout(depForm,300)});return}depForm()}
+function depForm(amt=''){modal(`<button class="x" data-x>×</button><h2>Пополнить депозит</h2><label>Сумма, USDT (минимум $500)</label><input class="in" id="am" inputmode="decimal" value="${amt}"><div class="err" id="ae"></div><label>Сеть</label><div class="chip" style="display:inline-block">TRON (TRC-20)</div><label>Адрес кошелька</label><div class="addr"><span id="ad">${ADDR}</span><button class="btn gold" id="cp" style="margin-left:auto">Копировать</button></div>
+<div class="warn">Отправляйте только USDT по сети TRON (TRC-20). Перевод в другой сети приведёт к потере средств. Переводы в блокчейне обычно необратимы.</div><button class="btn pri w" id="nx2">Перейти к проверке</button>`,()=>{
+$('#cp').onclick=async()=>{try{await navigator.clipboard.writeText(ADDR);toast('Адрес скопирован','ok')}catch(e){const r=document.createRange();r.selectNodeContents($('#ad'));getSelection().removeAllRanges();getSelection().addRange(r);toast('Выделено, нажмите Ctrl+C')}};
+$('#nx2').onclick=()=>{const a=parseFloat($('#am').value.replace(',','.'));if(!(a>=500)){$('#ae').textContent='Минимальная сумма пополнения — $500';$('#am').classList.add('bad');return}depConfirm(a)}})}
+function depConfirm(a){modal(`<button class="x" data-x>×</button><h2>Проверьте данные</h2><p>Сумма: <b>${num(a)} USDT</b><br>Сеть: <b>TRON (TRC-20)</b></p><div class="addr">${ADDR}</div><div class="warn">Перевод необратим. Убедитесь, что адрес и сеть указаны верно.</div><div class="row"><button class="btn pri" id="go2">Начать проверку</button><button class="btn" id="bk2">Назад</button></div>`,()=>{$('#bk2').onclick=()=>depForm(a);$('#go2').onclick=()=>depCheck(a)})}
+function depCheck(a){const M=['Проверяем сеть TRON','Проверяем статус заявки','Ожидаем результат проверки'];let s=0;
+modal(`<h2>Проверка перевода</h2><svg class="ring" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#2a262c" stroke-width="8"/><circle cx="50" cy="50" r="40" fill="none" stroke="url(#lg)" stroke-width="8" stroke-linecap="round" stroke-dasharray="70 190" style="transform-origin:center;animation:rot 1.2s linear infinite"/></svg><p id="pm" style="text-align:center;font-weight:700">${M[0]}</p><div class="bartrack"><i id="pb"></i></div><p class="mu" id="pt2" style="text-align:center">Осталось 20 с</p>`,()=>{
+requestAnimationFrame(()=>requestAnimationFrame(()=>{const b=$('#pb');if(b){b.style.transition='width 20s linear';b.style.width='100%'}}));
+const t0=Date.now(),iv=setInterval(()=>{const el=(Date.now()-t0)/1000;if(!$('#pm')){clearInterval(iv);return}s=Math.min(2,Math.floor(el/6.7));$('#pm').textContent=M[s];$('#pt2').textContent='Осталось '+Math.max(0,Math.ceil(20-el))+' с';
+if(el>=20){clearInterval(iv);onClose=null;depResult()}},250);onClose=()=>clearInterval(iv)})}
+function depResult(){modal(`<h2>Транзакция не найдена</h2><p>Это результат тестовой проверки. Реальный блокчейн TRON не опрашивался, депозит не зачислен.</p><div class="warn">В рабочем режиме зачисление выполняет сервер после проверки адреса, суммы, токена USDT, сети TRON и числа подтверждений.</div><div class="row"><button class="btn pri" id="rt">Проверить снова</button><button class="btn" data-x>Закрыть</button></div>`,()=>$('#rt').onclick=()=>depStart())}
+
+/* ---------- boot ---------- */
+function route(){if(!S.user)return loginView();if(UI.welcome)return welcomeView();shell();render(true)}
+function selfTest(){const a=[[1e4,1200],[2e4,2400],[3e4,3600],[4e4,4800],[5e4,6000],[6e4,7200]];const bad=a.filter(x=>profit(x[0])!==x[1]);console.log(bad.length?'TidPay tests FAIL':'TidPay tests OK');return !bad.length}
+load();selfTest();route();
+</script></body></html>
